@@ -1,0 +1,56 @@
+﻿@model SAS.Application.Contracts.IQuoteStorage
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Debug Stats</h1>
+    <div class="row justify-content-center mt-5">
+        <div class="mb-4">
+            <h4>
+                Total Saved:
+                <span id="totalSaved">@Model.TotalSaved</span>
+            </h4>
+            <h4>
+                Total Duplicates:
+                <span id="totalDuplicates">@Model.TotalDuplicates</span>
+            </h4>
+            <h4>
+                Total Dropped:
+                <span id="totalDropped">@Model.TotalDropped</span>
+            </h4>
+            <h4>
+                Last Batch Size:
+                <span id="lastBatchSize">@Model.LastBatchSize</span>
+            </h4>
+            <h4>
+                Last Batch Pause:
+                <span id="lastBatchPause">@Model.LastBatchPause</span>
+            </h4>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        async function refreshStats() {
+            try {
+                const res = await fetch('/Home/DebugInfo');
+                if (!res.ok) return;
+
+                const data = await res.json();
+
+                document.getElementById('totalSaved').textContent = data.totalSaved;
+                document.getElementById('totalDuplicates').textContent = data.totalDuplicates;
+                document.getElementById('totalDropped').textContent = data.totalDropped;
+                document.getElementById('lastBatchSize').textContent = data.lastBatchSize;
+                document.getElementById('lastBatchPause').textContent = data.lastBatchPause;
+            } catch (err) {
+                console.error('Failed to refresh stats:', err);
+            }
+        }
+
+        setInterval(refreshStats, 100);
+    </script>
+}
