@@ -20,7 +20,8 @@
 ## Как добавить новую биржу
 
 1. Реализовать `IExchangeAdapter` для формата сообщений новой биржи (парсинг сырого JSON → `Quote`).
-2. Добавить запись в `AggregatorSettings.Exchanges` с именем, URL и типом биржи. Это делается в `appsettings.json`
+2. Забиндить через DI новый адаптер как `AddSingleton<IExchangeAdapter, NewExchangeAdapter>()`.
+3. Добавить запись в `AggregatorSettings.Exchanges` с именем, URL и типом биржи. Это делается в `appsettings.json`
 
 Больше ничего менять не нужно — супервизор, клиент, дедупликатор и слой хранения не зависят от конкретной биржи.
 
